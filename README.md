@@ -44,6 +44,21 @@ Finally, set the bank to use for the Money gem:
 
 You can then use the Money gem's conversion methods.
 
+## Rate Sources
+
+To implement a different rate source, create a class that provides a "fetch_rates" method
+which returns an array of rate information hashes. This must return all permutations of
+rates you will need to do currency conversions. For example, most exchange rate web
+services provide rates based on a base currency. Thus, you need to calculate the inverse
+rates, as well as the permutations between currencies not including the base currency.
+
+See the EuCentralBank implementation for an example. It fetches the rates, which use the
+EUR as the base currency. It then sets those, calculates the inverse, then figures out
+rates for say USD to GBP or AUD to CAD, etc.
+
+The hashes in the return array should include the fields your exchange rate model will
+use as they will be passed through en masse.
+
 ## Contributing
 
 1. Fork it
