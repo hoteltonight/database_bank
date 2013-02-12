@@ -6,8 +6,11 @@ describe Money::Bank::DatabaseBank::RateSource::EuCentralBank do
   end
 
   it "should fetch rates for configured currencies" do
-    rate_fixture_data = File.expand_path(File.dirname(__FILE__) + '/exchange_rates.xml')
-    OpenURI::OpenRead.stub(:open).with(Money::Bank::DatabaseBank::RateSource::EuCentralBank::ECB_RATES_URL).and_return(rate_fixture_data)
+    rate_fixture_data = File.open(File.dirname(__FILE__) + '/../../eurofxref-daily.xml').read
+    Money::Bank::DatabaseBank::RateSource::EuCentralBank.
+      should_receive(:open).
+      with(Money::Bank::DatabaseBank::RateSource::EuCentralBank::ECB_RATES_URL).
+      and_return(rate_fixture_data)
 
     rates = Money::Bank::DatabaseBank::RateSource::EuCentralBank.fetch_rates
 
