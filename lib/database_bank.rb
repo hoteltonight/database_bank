@@ -5,20 +5,21 @@ require "database_bank/version"
 require 'database_bank/database_exchange'
 require 'database_bank/rate_source'
 require 'database_bank/rate_source/eu_central_bank'
+require 'database_bank/rate_source/open_exchange_rates'
 
 
 class Money
   module Bank
 
     module DatabaseBank
-     class InvalidCurrencyCode < StandardError ; end
+      class InvalidCurrencyCode < StandardError ; end
 
-     extend self
+      extend self
 
       # Configure/define which currencies you want to store exchange rates for
       def currencies=(currencies)
         @currencies = []
-        currencies.each do |currency| 
+        currencies.each do |currency|
           if currency =~ /^[A-Z]{3}$/i
             @currencies << currency.upcase
           else
@@ -50,7 +51,7 @@ class Money
 
       def exchange_rate_model
         @exchange_rate_model
-      end      
+      end
 
       def update_rates
         rates = rate_source.fetch_rates()

@@ -1,11 +1,11 @@
 # DatabaseBank
 
-This gem is an exchange rate implementation for use with the Money gem. In 
-particular, it retrieves rates from an exchange rate service, and then stores 
-those rates in your database via an ActiveModel compliant model class you 
-specify. This model needs to have from_currency, to_currency, rate, sourced_at, 
-and rate_source attributes. The expected use of this is to harvest exchange rates on 
-a consistent schedule, and then persist them so that you know what exchange 
+This gem is an exchange rate implementation for use with the Money gem. In
+particular, it retrieves rates from an exchange rate service, and then stores
+those rates in your database via an ActiveModel compliant model class you
+specify. This model needs to have from_currency, to_currency, rate, sourced_at,
+and rate_source attributes. The expected use of this is to harvest exchange rates on
+a consistent schedule, and then persist them so that you know what exchange
 rate you were using at a given time (e.g. for accounting or historical purposes).
 
 ## Installation
@@ -58,6 +58,14 @@ rates for say USD to GBP or AUD to CAD, etc.
 
 The hashes in the return array should include the fields your exchange rate model will
 use as they will be passed through en masse.
+
+### Open Exchange Rates source
+
+This source requires an APP ID, supplied when you purchase an Open Exchange Rates account/plan.
+You should configure this by doing:
+
+Money::Bank::DatabaseBank::RateSource::OpenExchangeRates.app_id = 'YourAppIdGoesHere'
+
 
 ## Contributing
 
