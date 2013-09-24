@@ -58,5 +58,3 @@ class Money
     end
   end
 end
-
-Money::Bank::DatabaseBank::RateSource::OpenExchangeRates.app_id = '08887eab974c4fad94a5e5ab94db5783'
