@@ -6,12 +6,13 @@ describe Money::Bank::DatabaseBank::RateSource::OpenExchangeRates do
   end
 
   it "should fetch rates for configured currencies" do
-    fixture = File.open(File.dirname(__FILE__) + '/../../open_exchange_latest.json').read
-    Net::HTTP.should_receive(:get).and_return(fixture)
-
+    test_data = File.open(File.dirname(__FILE__) + '/../../open_exchange_latest.json').read
+    fixture = OpenStruct.new(body: test_data)
+    Net::HTTP.should_receive(:get_response).and_return(fixture)
+    fixture.should_receive(:is_a?).with(Net::HTTPSuccess).and_return(true)
     rates = Money::Bank::DatabaseBank::RateSource::OpenExchangeRates.fetch_rates
 
-    fixture_data = JSON.parse(fixture)
+    fixture_data = JSON.parse(fixture.body)
     date = Time.at fixture_data['timestamp']
     aud = fixture_data['rates']['AUD']
     eur = fixture_data['rates']['EUR']

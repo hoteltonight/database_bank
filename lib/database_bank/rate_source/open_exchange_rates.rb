@@ -26,7 +26,12 @@ class Money
           # Returns an array of exchange rate data, where each array member is a hash
           # with sourced_at, from_currency, to_currency, rate, and rate_source keys.
           def self.fetch_rates
-            rate_data = JSON.parse(Net::HTTP.get(URI(OER_RATES_URL + app_id)))
+            response = Net::HTTP.get_response(URI(OER_RATES_URL + app_id))
+            unless response.is_a?(Net::HTTPSuccess)
+              raise "Failed to fetch latest rates from Open Exchange Rates: #{response.code} (#{response.message})"
+            end
+
+            rate_data = JSON.parse(response.body)
             sourced_at = Time.at(Integer(rate_data['timestamp']))
             rates = [{ sourced_at: sourced_at, rate_source: NAME, from_currency: BASE_CURRENCY, to_currency: BASE_CURRENCY, rate: 1.0 }]
 
