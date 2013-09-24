@@ -64,7 +64,7 @@ use as they will be passed through en masse.
 This source requires an APP ID, supplied when you purchase an Open Exchange Rates account/plan.
 You should configure this by doing:
 
-Money::Bank::DatabaseBank::RateSource::OpenExchangeRates.app_id = 'YourAppIdGoesHere'
+    Money::Bank::DatabaseBank::RateSource::OpenExchangeRates.app_id = 'YourAppIdGoesHere'
 
 
 ## Contributing
