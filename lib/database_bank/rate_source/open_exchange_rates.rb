@@ -9,7 +9,7 @@ class Money
         class OpenExchangeRates
           NAME = 'Open Exchange Rates'
           BASE_CURRENCY = 'USD'
-          OER_RATES_URL = 'https://openexchangerates.org/api/latest.json?app_id='
+          OER_RATES_URL = 'http://openexchangerates.org/api/latest.json?app_id='
 
           def self.app_id=(appid)
             @app_id = appid
@@ -26,7 +26,7 @@ class Money
           # Returns an array of exchange rate data, where each array member is a hash
           # with sourced_at, from_currency, to_currency, rate, and rate_source keys.
           def self.fetch_rates
-            rate_data = JSON.parse(Net::HTTP.get(URI(OER_RATES_URL + self.app_id)))
+            rate_data = JSON.parse(Net::HTTP.get(URI(OER_RATES_URL + app_id)))
             sourced_at = Time.at(Integer(rate_data['timestamp']))
             rates = [{ sourced_at: sourced_at, rate_source: NAME, from_currency: BASE_CURRENCY, to_currency: BASE_CURRENCY, rate: 1.0 }]
 
