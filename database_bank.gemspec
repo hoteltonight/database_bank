@@ -1,5 +1,6 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path('../lib/database_bank/version', __FILE__)
+# frozen_string_literal: true
+
+require_relative "lib/database_bank/version"
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Christopher Bailey"]
@@ -14,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.name          = "database_bank"
   gem.require_paths = ["lib"]
   gem.version       = DatabaseBank::VERSION
-  
+
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 

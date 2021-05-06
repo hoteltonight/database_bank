@@ -10,18 +10,18 @@ describe DatabaseBank do
 
   describe "configuration" do
     it "should default the rate source to the EuCentralBank" do
-      Money::Bank::DatabaseBank.rate_source.should == Money::Bank::DatabaseBank::RateSource::EuCentralBank
+      expect(Money::Bank::DatabaseBank.rate_source).to eq Money::Bank::DatabaseBank::RateSource::EuCentralBank
     end
 
     it "should use configured rate source" do
       Money::Bank::DatabaseBank.rate_source = ExchangeRate
-      Money::Bank::DatabaseBank.rate_source.should == ExchangeRate
+      expect(Money::Bank::DatabaseBank.rate_source).to eq ExchangeRate
     end
 
     it "should reject improperly formed currency ISO codes" do
-      lambda { Money::Bank::DatabaseBank.currencies = %w(USD gbp xXx) }.should_not raise_error
-      lambda { Money::Bank::DatabaseBank.currencies = %w(USD D12) }.should raise_error
-      lambda { Money::Bank::DatabaseBank.currencies = %w(123 abc) }.should raise_error
+      expect { Money::Bank::DatabaseBank.currencies = %w(USD gbp xXx) }.to_not raise_error
+      expect { Money::Bank::DatabaseBank.currencies = %w(USD D12) }.to raise_error(Money::Bank::DatabaseBank::InvalidCurrencyCode)
+      expect { Money::Bank::DatabaseBank.currencies = %w(123 abc) }.to raise_error(Money::Bank::DatabaseBank::InvalidCurrencyCode)
     end
   end
 
@@ -40,20 +40,20 @@ describe DatabaseBank do
         now = Time.now.utc
 
         # not as complete as what we'd actually get back, but sufficient for stubbing
-        rate_data = 
+        rate_data =
           [ { sourced_at: now, rate_source: 'test', from_currency: 'EUR', to_currency: 'EUR', rate: 1.0 },
             { sourced_at: now, rate_source: 'test', from_currency: 'EUR', to_currency: 'USD', rate: 1.2345 },
             { sourced_at: now, rate_source: 'test', from_currency: 'EUR', to_currency: 'CAD', rate: 1.4567 },
             { sourced_at: now, rate_source: 'test', from_currency: 'EUR', to_currency: 'AUD', rate: 1.8901 },
             { sourced_at: now, rate_source: 'test', from_currency: 'EUR', to_currency: 'GBP', rate: 1.0019 } ]
 
-        Money::Bank::DatabaseBank::RateSource::EuCentralBank.should_receive(:fetch_rates).and_return(rate_data)
+        expect(Money::Bank::DatabaseBank::RateSource::EuCentralBank).to receive(:fetch_rates).and_return(rate_data)
 
-        rate_data.each { |data| ExchangeRate.should_receive(:create!).with(data).and_return(true) }
+        rate_data.each { |data| expect(ExchangeRate).to receive(:create!).with(data).and_return(true) }
 
-        lambda { Money::Bank::DatabaseBank.update_rates() }.should_not raise_error
+        expect { Money::Bank::DatabaseBank.update_rates() }.to_not raise_error
       end
     end
-  end  
+  end
 
 end
