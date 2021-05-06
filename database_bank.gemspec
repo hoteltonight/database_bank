@@ -20,5 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec'
 
   gem.add_dependency "nokogiri"
-  gem.add_dependency "money",    "~> 4.0.2"
+  gem.add_dependency "money",    ">= 4.0.2", "<= 7.0"
 end
